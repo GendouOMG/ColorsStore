@@ -22,7 +22,7 @@
         <button class="v-header__sub-nav-btn v-header__sub-nav-btn--search"></button>
         <button class="v-header__sub-nav-btn v-header__sub-nav-btn--profile"></button>
         <button class="v-header__sub-nav-btn v-header__sub-nav-btn--like"></button>
-        <button class="v-header__sub-nav-btn v-header__sub-nav-btn--cart">0</button>
+        <button class="v-header__sub-nav-btn v-header__sub-nav-btn--cart" @click="openCart">{{itemQuantity}}</button>
       </div>
     </div>
   </div>
@@ -31,12 +31,28 @@
 <script>
 export default{
   name: "v-header",
-  props: {},
+  props: {
+    cart: {
+      type: Array,
+      default() {
+        return [];
+      }
+    }
+  },
   data(){
     return{}
   },
-  computed: {},
+  computed: {
+    itemQuantity() {
+      return this.cart.reduce( (acc, current) => {
+        return acc + current.quantity;
+      }, 0)
+    },
+  },
   methods:{
+    openCart() {
+      this.$emit('openCart')
+    }
   }
 }
 </script>

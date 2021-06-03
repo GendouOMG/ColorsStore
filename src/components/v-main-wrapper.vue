@@ -1,31 +1,43 @@
 <template>
   <div class="v-main-wrapper">
-    <v-header />
+    <v-header
+      :cart="cart"
+      @openCart="openCart"
+    />
     <v-catalog
       :products="products"
       @addToCart="addToCart"
     />
-    <!-- <v-cart
-      :cart="cart"
-      @addToCart="addToCart"
-      @increaseQuantity="increaseProductQuantity"
-      @decreaseQuantity="decreaseProductQuantity"
-      @removeFromCart="removeFromCart"
-    /> -->
+    <div class="v-main-wrapper__cart-shadow"
+      @click.self="closeCart"
+      v-show="showCart">
+
+      <v-cart
+        v-show="showCart"
+        :cart="cart"
+        @closeCart="closeCart"
+        @addToCart="addToCart"
+        @increaseQuantity="increaseProductQuantity"
+        @decreaseQuantity="decreaseProductQuantity"
+        @removeFromCart="removeFromCart"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-// import VCart from './v-cart.vue'
+import VCart from './v-cart.vue'
 import vCatalog from './v-catalog.vue'
 import VHeader from './v-header.vue'
 
 export default{
-  components: { vCatalog, VHeader },
-  // components: { vCatalog, VCart },
+  // components: { vCatalog, VHeader },
+  components: { vCatalog, VHeader, VCart },
   name: "v-main-wrapper",
+  props: {},
   data(){
     return{
+      showCart: false,
       cart: [],
       "products": [
         {
@@ -80,8 +92,17 @@ export default{
     }
   },
   computed: {
+
   },
   methods:{
+    closeCart() {
+      this.showCart = false;
+    },
+
+    openCart() {
+      this.showCart = true;
+    },
+
     addToCart(product) {
       // this.cart.push(data)
       if(this.cart.length !== 0) {
@@ -133,4 +154,17 @@ export default{
 </script>
 
 <style lang="scss">
+  .v-main-wrapper {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    &__cart-shadow {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba($color: #000000, $alpha: 0.7);
+    }
+  }
 </style>

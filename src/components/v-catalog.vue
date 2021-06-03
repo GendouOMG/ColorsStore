@@ -39,6 +39,7 @@ export default{
     }
   },
   methods:{
+
     addToCart(data){
       // console.log(data);
       this.$emit('addToCart', data)

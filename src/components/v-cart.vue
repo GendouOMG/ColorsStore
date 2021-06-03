@@ -1,23 +1,25 @@
 <template>
   <form class="v-cart" v-on:submit.prevent>
-    <h1 class="v-cart__headline">Корзина</h1>
-    <button class="v-cart__close-btn"></button>
-    <!-- <p>Cart: {{cart}}</p> -->
-    <div class="v-cart__cart-info">
-      <p class="v-cart__item-quantity">{{itemQuantity}}</p>
-    </div>
-    <v-cart-item class="v-cart__item"
-      v-for="cart_item in cart"
-      :key="cart_item.article"
-      :cart_item_data="cart_item"
-      @addToCart="addToCart"
-      @increaseQuantity="increaseQuantity"
-      @decreaseQuantity="decreaseQuantity"
-      @removeFromCart="removeFromCart"
-    />
-    <div class="v-cart__total">
-      <p class="v-cart__total-price"><span class="v-cart__total-price--subtitle">Итого</span> {{totalPrice}}</p>
-      <button class="v-cart__submit-btn">Оформить заказ</button>
+    <div class="v-cart__content-wrapper">
+      <h1 class="v-cart__headline">Корзина</h1>
+      <button class="v-cart__close-btn" @click="closeCart"></button>
+      <!-- <p>Cart: {{cart}}</p> -->
+      <div class="v-cart__cart-info">
+        <p class="v-cart__item-quantity">{{itemQuantity}}</p>
+      </div>
+      <v-cart-item class="v-cart__item"
+        v-for="cart_item in cart"
+        :key="cart_item.article"
+        :cart_item_data="cart_item"
+        @addToCart="addToCart"
+        @increaseQuantity="increaseQuantity"
+        @decreaseQuantity="decreaseQuantity"
+        @removeFromCart="removeFromCart"
+      />
+      <div class="v-cart__total">
+        <p class="v-cart__total-price"><span class="v-cart__total-price--subtitle">Итого</span> {{totalPrice}}</p>
+        <button class="v-cart__submit-btn">Оформить заказ</button>
+      </div>
     </div>
   </form>
 </template>
@@ -53,6 +55,10 @@ export default{
     }
   },
   methods:{
+    closeCart() {
+      this.$emit('closeCart')
+    },
+
     addToCart(data) {
       // console.log(data);
       this.$emit('addToCart', data)
@@ -77,13 +83,31 @@ export default{
 
 <style lang="scss">
   .v-cart {
-    position: relative;
+    position: fixed;
+    top: 0;
+    right: 0;
+
     margin: 0;
-    padding: 40px;
-    width: 520px;
-    height: auto;
+    padding: 0;
+    width: 600px;
+    max-width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+
+    background: #FFFFFF;
+
+    &__content-wrapper {
+      margin: 0;
+      padding: 40px;
+
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+
+    }
 
     &__headline {
       margin: 0 0 94px 0;
@@ -131,6 +155,9 @@ export default{
     }
 
     &__total-price {
+      display: flex;
+      flex-direction: column;
+
       font-family: 'Inter', sans-serif;
       font-style: normal;
       font-weight: 500;
@@ -141,6 +168,8 @@ export default{
       color: #1F2020;
 
       &--subtitle {
+        margin-bottom: 6px;
+        text-align: left;
         font-family: 'Inter', sans-serif;
         font-style: normal;
         font-weight: normal;
