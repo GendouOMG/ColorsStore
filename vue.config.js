@@ -1,5 +1,5 @@
 module.exports = {
-    baseUrl: "/ColorsStore/",
+    publicPath: "/ColorsStore/",
     css: {
         loaderOptions: {
             sass: {
